@@ -792,41 +792,101 @@ hljs.initHighlightingOnLoad();
 
 </section>
 <section data-transition="linear" data-transition-speed="default">
-<h3>First Slide</h3>
+<h3>Objectives</h3>
 <div class="slideContent" >
-<p>For more details on authoring R presentations please visit <a href="https://support.rstudio.com/hc/en-us/articles/200486468">https://support.rstudio.com/hc/en-us/articles/200486468</a>.</p>
+<p>I build a model that predicts car prices in Moscow Region,
+Russia as of August 2017.</p>
+
+<p>The data are &ldquo;real&rdquo;. They are taken from a website, that
+distributes autos, and parsed into the dataframe named
+<em>carsTbl</em>.</p>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>carsTbl Structure</h3>
+<div class="slideContent" >
+<pre><code class="r">dim(carsTbl)
+</code></pre>
+
+<pre><code>[1] 8969   13
+</code></pre>
+
+<pre><code class="r">names(carsTbl)
+</code></pre>
+
+<pre><code> [1] &quot;X.num&quot;     &quot;brand&quot;     &quot;model&quot;     &quot;disp&quot;      &quot;trans&quot;    
+ [6] &quot;hp&quot;        &quot;bodyType&quot;  &quot;fuelType&quot;  &quot;driveType&quot; &quot;year&quot;     
+[11] &quot;mileage&quot;   &quot;price&quot;     &quot;city&quot;     
+</code></pre>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>Predictors</h3>
+<div class="slideContent" >
+<p>These are characteristics that we use as predictors</p>
 
 <ul>
-<li>Bullet 1</li>
-<li>Bullet 2</li>
-<li>Bullet 3</li>
+<li>Brand </li>
+<li>Milage</li>
+<li>Year of Issue</li>
+<li>Horse Powers</li>
+<li>Displacement</li>
+<li>Transmission Type</li>
+<li>Drive Type</li>
+<li>Fuel Type</li>
 </ul>
 
 </div>
 
 </section>
 <section data-transition="linear" data-transition-speed="default">
-<h3>Slide With Code</h3>
+<h3>Model</h3>
 <div class="slideContent" >
-<pre><code class="r">summary(cars)
+<p>We use General Linear Model for prediction:</p>
+
+<pre><code class="r">model &lt;- glm(price ~  brand + mileage + year + hp + disp + trans + driveType + fuelType, family = poisson(), data = carsTbl) 
+str(model$coefficients)
 </code></pre>
 
-<pre><code>     speed           dist       
- Min.   : 4.0   Min.   :  2.00  
- 1st Qu.:12.0   1st Qu.: 26.00  
- Median :15.0   Median : 36.00  
- Mean   :15.4   Mean   : 42.98  
- 3rd Qu.:19.0   3rd Qu.: 56.00  
- Max.   :25.0   Max.   :120.00  
+<pre><code> Named num [1:44] -178.52 -0.356 -0.242 -0.571 -0.363 ...
+ - attr(*, &quot;names&quot;)= chr [1:44] &quot;(Intercept)&quot; &quot;brandBMW&quot; &quot;brandCadillac&quot; &quot;brandChevrolet&quot; ...
 </code></pre>
 
 </div>
 
 </section>
 <section data-transition="linear" data-transition-speed="default">
-<h3>Slide With Plot</h3>
-<div class="mediaOnly slideContent" >
-<p><img src="data:image/png;base64,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" alt="plot of chunk unnamed-chunk-2"/></p>
+<h3>Example</h3>
+<div class="slideContent" >
+<p>Let&#39;s see an example. Here &ldquo;полный&rdquo; means 4-wheel drive.</p>
+
+<pre><code class="r">prediction &lt;- predict(model, data.frame(brand=&quot;Audi&quot;, mileage = 177000, year = 2007, hp = 350,disp=4.16, trans=&quot;AT&quot;, driveType=&quot;полный&quot;, fuelType = &quot;petrol&quot;))
+</code></pre>
+
+<p>The estimated price (in Russian Roubles) is:</p>
+
+<pre><code class="r">  price &lt;- exp(prediction)
+  price
+</code></pre>
+
+<pre><code>      1 
+1351812 
+</code></pre>
+
+<p>So, the auto with the given characteristics costs about
+1 352 000 Rub.</p>
+
+</div>
+
+</section>
+<section data-transition="linear" data-transition-speed="default">
+<h3>The end</h3>
+<div class="slideContent" >
+<p>Thank you for your attention!</p>
 
 </div>
 
